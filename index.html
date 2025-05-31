@@ -541,7 +541,7 @@
                     </a>
                 </div>
 
-                <div class="work__card mix ds">
+                <div class="work__card mix ds ml ">
                     <img src="assets/img/restaurant-analysis.jpg" alt="" class="work__img">
 
                     <h3 class="work__title">Restaurant Data Analysis</h3>
@@ -584,6 +584,17 @@
                         View Projects <i class='bx bx-right-arrow work__icon'></i>
                     </a>
                 </div>
+                <div class="work__card mix ml ">
+                    <img src="assets/img/ai-dungeon.jpg" alt="" class="work__img">
+
+                     <h3 class="work__title">AI Dungeon Story Generator</h3>
+                     <p class="work__description">AI-powered interactive storytelling using GPT-Neo</p>
+
+                     <a href="https://github.com/IrfanPJ/ai-dungeon-story-generator" target="_blank" class="work__button">
+                           View Project <i class='bx bx-right-arrow work__icon'></i>
+    </a>
+</div>
+
             </div>
         </section>
 
@@ -672,21 +683,23 @@
                 <div class="contact__content">
                     <h3 class="contact__title contact__title-form">Write Me your Message</h3>
 
-                    <form action="" class="contact__form">
+                    <form name="contact" method="POST" netlify netlify-honeypot="bot-field" class="contact__form">
+                        <input type="hidden" name="form-name" value="contact">
+
                         <div class="contact__form-div">
                             <label for="" class="contact__form-tag">Name</label>
-                            <input type="text" placeholder="Enter your name" class="contact__form-input">
+                            <input type="text" placeholder="Enter your name" class="contact__form-input" required>
                         </div>
 
                         <div class="contact__form-div">
                             <label for="" class="contact__form-tag">Email</label>
-                            <input type="email" placeholder="Enter your email" class="contact__form-input">
+                            <input type="email" placeholder="Enter your email" class="contact__form-input" required>
                         </div>
 
                         <div class="contact__form-div contact__form-area">
                             <label for="" class="contact__form-tag">Message</label>
                             <textarea name="" id="" cols="30" rows="10" placeholder="Write your message about AI/ML projects or collaboration opportunities"
-                                class="contact__form-input "></textarea>
+                                class="contact__form-input " required></textarea>
                         </div>
 
                         <button type="submit" class="button">
