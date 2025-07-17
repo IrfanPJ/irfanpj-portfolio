@@ -24,6 +24,7 @@
 
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/chatbot.css">
 
     <title>Irfan PJ - AI & Data Science Portfolio</title>
 </head>
@@ -802,6 +803,28 @@
             </span>
         </div>
     </footer>
+
+    <div class="chat-widget">
+    <div id="chat-popup" class="chat-popup">
+        <div class="chat-header">
+            ILMORA AI Assistant
+            <button id="close-btn" class="close-btn">&times;</button>
+        </div>
+        <div id="chat-messages" class="chat-messages">
+            <div class="message ai-message">
+                Hello! I'm the ILMORA AI Assistant. How can I help you today?
+            </div>
+        </div>
+        <form id="chat-form" class="chat-input-form">
+            <input type="text" id="user-input" placeholder="Ask a question..." autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <button id="chat-bubble" class="chat-bubble">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path></svg>
+    </button>
+</div>
+    
 
     <!--=============== SCROLLREVEAL ===============-->
 
