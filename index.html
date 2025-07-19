@@ -804,26 +804,147 @@
         </div>
     </footer>
 
-    <div class="chat-widget">
-    <div id="chat-popup" class="chat-popup">
-        <div class="chat-header">
-            ILMORA AI Assistant
-            <button id="close-btn" class="close-btn">&times;</button>
-        </div>
-        <div id="chat-messages" class="chat-messages">
-            <div class="message ai-message">
-                Hello! I'm the ILMORA AI Assistant. How can I help you today?
+ <div class="chat-widget">
+        <div id="chat-popup" class="chat-popup">
+            <div class="chat-header">
+                ILMORA AI Assistant
+                <button id="close-btn" class="close-btn">&times;</button>
+            </div>
+            <div class="streamlit-container">
+                <div id="loading-spinner" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading AI Assistant...</p>
+                </div>
+                <iframe 
+                    id="streamlit-iframe" 
+                    class="streamlit-iframe" 
+                    src="" 
+                    style="display: none;"
+                    title="ILMORA AI Assistant"
+                    allow="camera; microphone; clipboard-read; clipboard-write;">
+                </iframe>
             </div>
         </div>
-        <form id="chat-form" class="chat-input-form">
-            <input type="text" id="user-input" placeholder="Ask a question..." autocomplete="off">
-            <button type="submit">Send</button>
-        </form>
+        <button id="chat-bubble" class="chat-bubble">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path>
+            </svg>
+        </button>
     </div>
-    <button id="chat-bubble" class="chat-bubble">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path></svg>
-    </button>
-</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuration
+            const STREAMLIT_URL = 'https://ilmorabot.streamlit.app';
+            
+            // Get DOM elements
+            const chatBubble = document.getElementById('chat-bubble');
+            const chatPopup = document.getElementById('chat-popup');
+            const closeBtn = document.getElementById('close-btn');
+            const streamlitIframe = document.getElementById('streamlit-iframe');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            
+            let isIframeLoaded = false;
+
+            // Toggle chat popup
+            chatBubble.addEventListener('click', () => {
+                chatPopup.style.display = 'flex';
+                chatBubble.style.display = 'none';
+                
+                // Load Streamlit iframe only when opened for the first time
+                if (!isIframeLoaded) {
+                    loadStreamlitApp();
+                }
+            });
+
+            // Close chat popup
+            closeBtn.addEventListener('click', () => {
+                chatPopup.style.display = 'none';
+                chatBubble.style.display = 'flex';
+            });
+
+            // Load Streamlit app
+            function loadStreamlitApp() {
+                // Show loading spinner
+                loadingSpinner.style.display = 'block';
+                streamlitIframe.style.display = 'none';
+                
+                // Set iframe source
+                streamlitIframe.src = `${STREAMLIT_URL}?embedded=true`;
+                
+                // Handle iframe load
+                streamlitIframe.onload = () => {
+                    setTimeout(() => {
+                        loadingSpinner.style.display = 'none';
+                        streamlitIframe.style.display = 'block';
+                        isIframeLoaded = true;
+                    }, 1000); // Small delay to ensure full load
+                };
+                
+                // Handle iframe error
+                streamlitIframe.onerror = () => {
+                    loadingSpinner.innerHTML = `
+                        <div style="color: #ff4444;">
+                            <p>Unable to load AI Assistant</p>
+                            <button onclick="window.open('${STREAMLIT_URL}', '_blank')" 
+                                    style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                                Open in New Tab
+                            </button>
+                        </div>
+                    `;
+                };
+            }
+
+            // Close popup when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!chatPopup.contains(e.target) && !chatBubble.contains(e.target)) {
+                    if (chatPopup.style.display === 'flex') {
+                        chatPopup.style.display = 'none';
+                        chatBubble.style.display = 'flex';
+                    }
+                }
+            });
+
+            // Handle escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && chatPopup.style.display === 'flex') {
+                    chatPopup.style.display = 'none';
+                    chatBubble.style.display = 'flex';
+                }
+            });
+
+            // Optional: Add notification badge
+            function showNotificationBadge() {
+                const badge = document.createElement('div');
+                badge.style.cssText = `
+                    position: absolute;
+                    top: -5px;
+                    right: -5px;
+                    width: 20px;
+                    height: 20px;
+                    background: #ff4444;
+                    color: white;
+                    border-radius: 50%;
+                    font-size: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                `;
+                badge.textContent = '!';
+                chatBubble.style.position = 'relative';
+                chatBubble.appendChild(badge);
+                
+                // Remove badge after click
+                chatBubble.addEventListener('click', () => {
+                    badge.remove();
+                }, { once: true });
+            }
+
+            // Optional: Show notification badge after 5 seconds
+            setTimeout(showNotificationBadge, 5000);
+        });
+    </script>
     
 
     <!--=============== SCROLLREVEAL ===============-->
